@@ -18,23 +18,30 @@ import static com.abysstone.tasktimer.R.string;
 class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewAdapter.TaskViewHolder>{
     private static final String TAG = "CursorRecyclerViewAdapt";
     private Cursor mCursor;
+    private OnTaskClickListener mListener;
 
-    public CursorRecyclerViewAdapter(Cursor mCursor) {
+    interface OnTaskClickListener{
+        void onEditClick(Task task);
+        void onDeleteClick(Task task);
+    }
+
+    public CursorRecyclerViewAdapter(Cursor mCursor, OnTaskClickListener listener) {
         Log.d(TAG, "CursorRecyclerViewAdapter: Constructor called");
         this.mCursor = mCursor;
+        mListener = listener;
     }
 
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: new view requested");
+//        Log.d(TAG, "onCreateViewHolder: new view requested");
         View view = LayoutInflater.from(parent.getContext()).inflate(layout.task_list_items, parent, false);
         return new TaskViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: starts");
+    public void onBindViewHolder(@NonNull final TaskViewHolder holder, int position) {
+//        Log.d(TAG, "onBindViewHolder: starts");
 
         if (mCursor == null || (mCursor.getCount() == 0)){
             Log.d(TAG, "onBindViewHolder: providing instructions");
@@ -46,16 +53,62 @@ class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewA
             if (!mCursor.moveToPosition(position)){
                 throw new IllegalStateException("Could not move cursor to position " + position);
             }
-            holder.name.setText(mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_NAME)));
-            holder.description.setText(mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_DESCRIPTION)));
+
+            final Task task = new Task(mCursor.getLong(mCursor.getColumnIndex(TasksContract.Columns._ID)),
+                    mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_NAME)),
+                    mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_DESCRIPTION)),
+                    mCursor.getInt(mCursor.getColumnIndex(TasksContract.Columns.TASKS_SORTORDER)));
+
+            holder.name.setText(task.getName());
+            holder.description.setText(task.getDescription());
+
             holder.editButton.setVisibility(View.VISIBLE);  //TODO add onClick listener
             holder.deleteButton.setVisibility(View.VISIBLE);  //TODO add onClick listener
+
+//            View.OnClickListener buttonListener = new View.OnClickListener(){
+//            class Listener implements View.OnClickListener{
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(TAG, "onClick: starts");
+//                    Log.d(TAG, "onClick: button with id " + v.getId() + " clicked");
+//                    Log.d(TAG, "onClick: task name is " + task.getName());
+//                }
+//            }
+
+            final View.OnClickListener buttonListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    Log.d(TAG, "onClick: starts");
+                    switch (v.getId()){
+                        case R.id.tli_edit:
+                            if (mListener != null){
+                                mListener.onEditClick(task);
+                            }
+                            break;
+                        case id.tli_delete:
+                            if (mListener != null){
+                                mListener.onDeleteClick(task);
+                            }
+                            break;
+                        default:
+                            Log.d(TAG, "onClick: found unexpected button id");
+                    }
+
+//                    Log.d(TAG, "onClick: button with id " + v.getId() + " clicked");
+//                    Log.d(TAG, "onClick: task name is " + task.getName());
+
+                }
+            };
+
+//            Listener buttonListener = new Listener();
+            holder.editButton.setOnClickListener(buttonListener);
+            holder.deleteButton.setOnClickListener(buttonListener);
         }
     }
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: starts");
+//        Log.d(TAG, "getItemCount: starts");
         if (mCursor == null || (mCursor.getCount() == 0)){
             return 1; //fib, because we populate a single ViewHolder with instructions
         }else {
@@ -100,7 +153,7 @@ class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewA
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            Log.d(TAG, "TaskViewHolder: starts");
+//            Log.d(TAG, "TaskViewHolder: starts");
 
             this.name = (TextView) itemView.findViewById(id.tli_name);
             this.description = (TextView) itemView.findViewById(id.tli_description);

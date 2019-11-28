@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CursorRecyclerViewAdapter.OnTaskClickListener{
     private static final String TAG = "MainActivity";
 
     //whether or not the activity is in 2-pane mode
@@ -127,6 +127,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onEditClick(Task task) {
+        taskEditRequest(task);
+    }
+
+    @Override
+    public void onDeleteClick(Task task) {
+        getContentResolver().delete(TasksContract.buildTaskUri(task.getid()), null, null);
     }
 
     private void taskEditRequest(Task task){

@@ -59,7 +59,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.task_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mAdapter = new CursorRecyclerViewAdapter(null);
+        mAdapter = new CursorRecyclerViewAdapter(null, (CursorRecyclerViewAdapter.OnTaskClickListener) getActivity());
         recyclerView.setAdapter(mAdapter);
 
         Log.d(TAG, "onCreateView: returning");
@@ -76,7 +76,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                 TasksContract.Columns.TASKS_NAME,
                                 TasksContract.Columns.TASKS_DESCRIPTION,
                                 TasksContract.Columns.TASKS_SORTORDER};
-        String sortOrder = TasksContract.Columns.TASKS_SORTORDER + "," + TasksContract.Columns.TASKS_NAME;
+        //<order by> Tasks.SortOrder, Tasks.Name COLLATE NOCASE
+        String sortOrder = TasksContract.Columns.TASKS_SORTORDER + "," + TasksContract.Columns.TASKS_NAME + " COLLATE NOCASE";
         switch (id){
             case LOADER_ID:
                 return new CursorLoader(getActivity(),
