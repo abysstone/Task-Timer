@@ -41,7 +41,8 @@ public class AddEditActivityFragment extends Fragment {
         mSortOrderTextView = (EditText) view.findViewById(R.id.addedit_sortorder);
         mSaveButton = (Button) view.findViewById(R.id.addedit_save);
 
-        Bundle arguments = getActivity().getIntent().getExtras(); //this line to be changed later
+//        Bundle arguments = getActivity().getIntent().getExtras(); //this line to be changed later
+        Bundle arguments = getArguments();
 
         final Task task;
         if (arguments != null){
