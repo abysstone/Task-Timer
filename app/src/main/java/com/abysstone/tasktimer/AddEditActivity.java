@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class AddEditActivity extends AppCompatActivity {
+public class AddEditActivity extends AppCompatActivity implements AddEditActivityFragment.OnSaveClicked{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,4 +32,8 @@ public class AddEditActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onSaveClicked() {
+        finish();
+    }
 }

@@ -8,10 +8,11 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements CursorRecyclerViewAdapter.OnTaskClickListener{
+public class MainActivity extends AppCompatActivity implements CursorRecyclerViewAdapter.OnTaskClickListener,
+                AddEditActivityFragment.OnSaveClicked{
     private static final String TAG = "MainActivity";
 
     //whether or not the activity is in 2-pane mode
@@ -102,8 +103,22 @@ public class MainActivity extends AppCompatActivity implements CursorRecyclerVie
 ////        final SQLiteDatabase db = appDatabase.getReadableDatabase();
 
 
+    }
 
 
+    @Override
+    public void onSaveClicked() {
+        Log.d(TAG, "onSaveClicked: starts");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.task_details_container);
+        if (fragment != null){
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.remove(fragment);
+//            fragmentTransaction.commit();
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -157,10 +172,13 @@ public class MainActivity extends AppCompatActivity implements CursorRecyclerVie
             arguments.putSerializable(Task.class.getSimpleName(), task);
             fragment.setArguments(arguments);
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.task_details_container, fragment);
-            fragmentTransaction.commit();
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.task_details_container, fragment);
+//            fragmentTransaction.commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.task_details_container,fragment)
+                    .commit();
 
         }else{
             Log.d(TAG, "taskEditRequest: in single-pane mode (phone)");
