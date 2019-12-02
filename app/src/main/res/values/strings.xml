@@ -23,4 +23,7 @@
     <string name="cancelEditDial_message">You have unsaved changes. Do you want to abandon your changes, or continue editing.</string>
     <string name="cancelEditDiag_positive_caption">Continue editing</string>
     <string name="cancelEditDiag_negative_caption">Abandon changes</string>
+    <string name="about_copyright">Copyright\u00a9 2019. Manas Tech Studio.</string>
+    <string name="about_email">For support, email manasbhatt111@gmail.com</string>
+    <string name="about_credits">Icon definition from <b>analog clock</b> at openclipart.org by <b>Anonymous</b></string>
 </resources>
