@@ -14,10 +14,12 @@ import androidx.fragment.app.DialogFragment;
 public class AppDialog extends DialogFragment {
     private static final String TAG = "AppDialog";
 
+
     public static final String DIALOG_ID = "id";
     public static final String DIALOG_MESSAGE = "message";
     public static final String DIALOG_POSITIVE_RID = "positive_rid";
     public static final String DIALOG_NEGATIVE_RID = "negative_rid";
+
 
     /**
      * The dialog's callback interface to notify of user selected results (deletion confirmed, etc.)
@@ -123,10 +125,4 @@ public class AppDialog extends DialogFragment {
             mDialogEvents.onDialogCancelled(dialogId);
         }
     }
-
-//    @Override
-//    public void onDismiss(DialogInterface dialog) {
-//        Log.d(TAG, "onDismiss: called");
-//        super.onDismiss(dialog);
-//    }
 }
