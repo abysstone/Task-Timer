@@ -7,8 +7,8 @@ android {
         applicationId "com.abysstone.tasktimer"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 101808
+        versionName "1.0.1 beta"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
