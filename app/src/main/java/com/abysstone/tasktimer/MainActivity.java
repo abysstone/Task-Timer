@@ -1,5 +1,6 @@
 package com.abysstone.tasktimer;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -174,10 +175,30 @@ public class MainActivity extends AppCompatActivity
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setView(messageView);
 
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                Log.d(TAG, "onClick: Entering messageView.onClick showing = " + mDialog.isShowing());   // logd calling a function, might give null pointer ...
+                if (mDialog != null && mDialog.isShowing()){
+                    mDialog.dismiss();
+                }
+            }
+        });
+
         mDialog = builder.create();
         mDialog.setCanceledOnTouchOutside(true);
 //        builder.setTitle(R.string.app_name);
 //        builder.setIcon(R.mipmap.ic_launcher);
+
+//        messageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(TAG, "onClick: Entering messageView.onClick, showing = " + mDialog.isShowing());
+//                if (mDialog != null && mDialog.isShowing()){
+//                    mDialog.dismiss();
+//                }
+//            }
+//        });
 
         TextView tv =(TextView) messageView.findViewById(R.id.about_version);
         tv.setText("v" + BuildConfig.VERSION_NAME);
