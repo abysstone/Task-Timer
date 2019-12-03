@@ -20,7 +20,7 @@ public class AppDialog extends DialogFragment {
     public static final String DIALOG_POSITIVE_RID = "positive_rid";
     public static final String DIALOG_NEGATIVE_RID = "negative_rid";
 
-
+    
     /**
      * The dialog's callback interface to notify of user selected results (deletion confirmed, etc.)
      */
