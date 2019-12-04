@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -321,5 +322,11 @@ public class MainActivity extends AppCompatActivity
         if (mDialog != null && mDialog.isShowing()){
             mDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        Log.d(TAG, "onAttachFragment: called, fragment is " + fragment.toString());
+        super.onAttachFragment(fragment);
     }
 }

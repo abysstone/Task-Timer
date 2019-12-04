@@ -23,19 +23,52 @@ public class AddEditActivity extends AppCompatActivity implements AddEditActivit
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+// if a copy is created over exiting one...
+//        AddEditActivityFragment fragment = new AddEditActivityFragment();
+//
+//        Bundle arguments = getIntent().getExtras();
+////        Bundle arguments = new Bundle();
+////        arguments.putSerializable(Task.class.getSimpleName(), task);
+//        fragment.setArguments(arguments);
+//
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment, fragment);
+//        fragmentTransaction.commit();
 
-        AddEditActivityFragment fragment = new AddEditActivityFragment();
+//        // performing advance null checking.
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        if (fragmentManager.findFragmentById(R.id.fragment) == null){
+//
+//            AddEditActivityFragment fragment = new AddEditActivityFragment();
+//
+//            Bundle arguments = getIntent().getExtras();
+////        Bundle arguments = new Bundle();
+////        arguments.putSerializable(Task.class.getSimpleName(), task);
+//            fragment.setArguments(arguments);
+//
+////        FragmentManager fragmentManager = getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.fragment, fragment);
+//            fragmentTransaction.commit();
+//        }
 
 
-        Bundle arguments = getIntent().getExtras();
-//        Bundle arguments = new Bundle();
-//        arguments.putSerializable(Task.class.getSimpleName(), task);
-        fragment.setArguments(arguments);
-
+        // as per google doc ...
+        if (savedInstanceState == null){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment, fragment);
-        fragmentTransaction.commit();
+//        if (fragmentManager.findFragmentById(R.id.fragment) == null){
+
+            AddEditActivityFragment fragment = new AddEditActivityFragment();
+
+            Bundle arguments = getIntent().getExtras();
+            fragment.setArguments(arguments);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment, fragment);
+            fragmentTransaction.commit();
+        }
+
     }
 
     @Override
