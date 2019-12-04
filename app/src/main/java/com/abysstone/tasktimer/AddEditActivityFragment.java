@@ -1,5 +1,6 @@
 package com.abysstone.tasktimer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -26,7 +30,6 @@ public class AddEditActivityFragment extends Fragment {
     private EditText mNameTextView;
     private EditText mDescriptionTextView;
     private EditText mSortOrderTextView;
-    private Button mSaveButton;
 
     private OnSaveClicked mSaveListener = null;
 
@@ -59,22 +62,38 @@ public class AddEditActivityFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true );
+        }
+    }
+
+    @Override
     public void onDetach() {
         Log.d(TAG, "onDetach: starts");
         super.onDetach();
         mSaveListener = null;
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: starts");
         View view = inflater.inflate(R.layout.fragment_add_edit, container, false);
 
-        mNameTextView = (EditText) view.findViewById(R.id.addedit_name);
-        mDescriptionTextView = (EditText) view.findViewById(R.id.addedit_description);
-        mSortOrderTextView = (EditText) view.findViewById(R.id.addedit_sortorder);
-        mSaveButton = (Button) view.findViewById(R.id.addedit_save);
+        mNameTextView = view.findViewById(R.id.addedit_name);
+        mDescriptionTextView = view.findViewById(R.id.addedit_description);
+        mSortOrderTextView = view.findViewById(R.id.addedit_sortorder);
+        Button mSaveButton = view.findViewById(R.id.addedit_save);
 
 //        Bundle arguments = getActivity().getIntent().getExtras(); //this line to be changed later
         Bundle arguments = getArguments();
@@ -117,6 +136,10 @@ public class AddEditActivityFragment extends Fragment {
 
                 switch (mMode){
                     case EDIT:
+                        if (task == null){
+                            // remove lint warnings will never execute
+                            break;
+                        }
                         if (!mNameTextView.getText().toString().equals(task.getName())){
                             values.put(TasksContract.Columns.TASKS_NAME, mNameTextView.getText().toString());
                         }
