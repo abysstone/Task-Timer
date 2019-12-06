@@ -31,6 +31,10 @@ class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewA
         mListener = listener;
     }
 
+//    public void setListener(OnTaskClickListener mListener) {
+//        this.mListener = mListener;
+//    }
+
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -62,8 +66,8 @@ class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewA
             holder.name.setText(task.getName());
             holder.description.setText(task.getDescription());
 
-            holder.editButton.setVisibility(View.VISIBLE);  //TODO add onClick listener
-            holder.deleteButton.setVisibility(View.VISIBLE);  //TODO add onClick listener
+            holder.editButton.setVisibility(View.VISIBLE);
+            holder.deleteButton.setVisibility(View.VISIBLE);
 
 //            View.OnClickListener buttonListener = new View.OnClickListener(){
 //            class Listener implements View.OnClickListener{
