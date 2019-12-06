@@ -59,14 +59,24 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.task_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mAdapter = new CursorRecyclerViewAdapter(null,
-                (CursorRecyclerViewAdapter.OnTaskClickListener) getActivity());
+        if (mAdapter == null){
+            mAdapter = new CursorRecyclerViewAdapter(null,
+                    (CursorRecyclerViewAdapter.OnTaskClickListener) getActivity());
+        }
         recyclerView.setAdapter(mAdapter);
 
         Log.d(TAG, "onCreateView: returning");
         return view;
 
 //        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: called");
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @NonNull
