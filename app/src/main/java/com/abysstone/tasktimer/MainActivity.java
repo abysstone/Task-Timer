@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity
 
     private AlertDialog mDialog = null;         // module scope because we need to dismiss it in onStop
                                                 // eg when orientation changes to avoid memory leak.
+
+    private Timing mCurrentTiming = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -259,26 +263,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onEditClick(Task task) {
+    public void onEditClick(@NonNull Task task) {
         taskEditRequest(task);
     }
 
     @Override
-    public void onDeleteClick(Task task) {
+    public void onDeleteClick(@NonNull Task task) {
         Log.d(TAG, "onDeleteClick: starts");
 
         AppDialog dialog = new AppDialog();
         Bundle args = new Bundle();
         args.putInt(AppDialog.DIALOG_ID, DIALOG_ID_DELETE);
-        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deldiag_message, task.getid(), task.getName()));
+        args.putString(AppDialog.DIALOG_MESSAGE, getString(R.string.deldiag_message, task.getId(), task.getName()));
         args.putInt(AppDialog.DIALOG_POSITIVE_RID, R.string.deldiag_positive_caption);
 
-        args.putLong("TaskId", task.getid());
+        args.putLong("TaskId", task.getId());
 
         dialog.setArguments(args);
         dialog.show(getSupportFragmentManager(), null);
 
-//        getContentResolver().delete(TasksContract.buildTaskUri(task.getid()), null, null);
+//        getContentResolver().delete(TasksContract.buildTaskUri(task.getId()), null, null);
 
     }
 
@@ -435,5 +439,29 @@ public class MainActivity extends AppCompatActivity
 
         dialog.setArguments(args);
         dialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void onTaskLongClick(@NonNull Task task) {
+        Log.d(TAG, "onTaskLongClick: called");
+        Toast.makeText(this, "Task " + task.getId() + " clicked", Toast.LENGTH_SHORT).show();
+        TextView taskName = findViewById(R.id.current_task);
+        if (mCurrentTiming != null){
+            if (task.getId() == mCurrentTiming.getTaskId().getId()){
+                // the current task was tapped a second time, so stop timing
+                // TODO saveTiming(mCurrentTiming);
+                mCurrentTiming = null;
+                taskName.setText(getString(R.string.no_task_message));
+            }else {
+                // a new task is being timed, so stop the old one first
+                // TODO saveTiming(mCurrentTiming);
+                mCurrentTiming = new Timing(task);
+                taskName.setText("Timing " + mCurrentTiming.getTaskId().getName());
+            }
+        }else {
+            // no task being timed so start timing the new task
+            mCurrentTiming = new Timing(task);
+            taskName.setText("Timing " + mCurrentTiming.getTaskId().getName());
+        }
     }
 }
