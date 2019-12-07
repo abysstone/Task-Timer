@@ -227,7 +227,7 @@ public class AppProvider extends ContentProvider {
 
             case TIMINGS:
                 db = mOpenHelper.getWritableDatabase();
-                count = db.delete(TimingsContract.TABLE_NAME, values, selection, selectionArgs);
+                count = db.delete(TimingsContract.TABLE_NAME, selection, selectionArgs);
                 break;
 
             case TIMINGS_ID:
